@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: dbo                # Name of the source (schema or database)
+    database: py             # Source database name
+    schema: dbo                   # Source schema name
+    tables:
+      - name: customers              # Table in the source
+        description: "Customer information table"
+      - name: accounts
+        description: "Bank accounts table"
+      - name: transactions
+        description: "Transaction details for accounts"
+      - name: loans
+        description: "Loan details associated with customers"
+      - name: branches
+        description: "Branch information for the bank"
+      - name: creditCards
+        description: "Credit card details for customers"
+      - name: employees
+        description: "Employees details"
