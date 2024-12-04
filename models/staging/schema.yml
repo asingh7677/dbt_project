@@ -1,0 +1,122 @@
+
+version: 2
+
+models:
+  - name: stg_customers
+    description: "A customers dbt model"
+    columns:
+      - name: CustomerID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: Email
+        description: "The email which is unique for each customer"
+        data_tests:
+          - unique
+
+  - name: stg_accounts
+    description: "An accounts dbt model"
+    columns:
+      - name: AccountID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: CustomerID
+        description: "The CustomerID ref to Customer model"
+        data_tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: CustomerID
+      - name: status
+        description: "It only accepts 2 values either Active or Dormant"
+        data_tests:
+          - accepted_values:
+              values:
+                - Active
+                - Dormant
+
+  - name: stg_branches
+    description: "A branch dbt model"
+    columns:
+      - name: BranchID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: PhoneNumber
+        description: "The PhoneNumber which is unique for each customer"
+        data_tests:
+          - unique
+      - name: ManagerID
+        description: "The ManagerID ref to employees model"
+        data_tests:
+          - relationships:
+              to: ref('stg_employees')
+              field: ManagerID
+      - name: ManagerID
+        description: "The ManagerID should not be null"
+        data_tests:
+          - not_null
+          
+
+  - name: stg_creditCard
+    description: "A credit_cards dbt model"
+    columns:
+      - name: CardID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: CustomerID
+        description: "The CustomerID ref to Customer model"
+        data_tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: CustomerID
+
+  - name: stg_transactions
+    description: "A transactions dbt model"
+    columns:
+      - name: TransactionID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: AccountID
+        description: "The AccountID ref to Accounts model"
+        data_tests:
+          - relationships:
+              to: ref('stg_accounts')
+              field: AccountID
+
+  - name: stg_loans
+    description: "A loan dbt model"
+    columns:
+      - name: LoanID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: CustomerID
+        description: "The CustomerID ref to Customer model"
+        data_tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: CustomerID
+
+  - name: 'stg_employees'
+    description: "An employee dbt model"
+    columns:
+      - name: EmployeeID
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: BranchID
+        description: "The BranchID ref to Branch table"
+        data_tests:
+          - relationships:
+              to: ref('stg_branches')
+              field: BranchID
